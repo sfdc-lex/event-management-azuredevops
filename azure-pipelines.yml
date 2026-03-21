@@ -4,16 +4,41 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+- feature/ci-cd
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+  - stage: SFBuildStage
+    jobs:
+      - job: BuildJob
+        steps:
+          - script: echo "Building the application"
+            displayName: Single Line script
+          - script: |
+              echo "MultiLine-1"
+              echo "Multiline-2"
+              date
+              whoami
+              pwd
+              uname
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - stage: SFTestStage
+    jobs:
+      - job: TestJob
+        steps:
+          - script: echo "Building the application"
+            displayName: Single Line script
+  - stage: SFDeployStage
+    jobs:
+      - job: DeployJob
+        steps:
+          - script: echo "Deploying the application"
+            displayName: Single Line script
+          - script: echo Hello, world!
+            displayName: 'Run a one-line script'
+          - script: |
+             echo Add other tasks to build, test, and deploy your project.
+             echo See https://aka.ms/yaml
+             displayName: 'Run a multi-line script'
