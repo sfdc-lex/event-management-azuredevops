@@ -23,7 +23,6 @@ stages:
               whoami
               pwd
               uname
-
   - stage: SFTestStage
     jobs:
       - job: TestJob
