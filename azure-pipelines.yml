@@ -4,7 +4,9 @@
 # https://aka.ms/yaml
 
 trigger:
-- feature/ci-cd
+  branches:
+    include:
+      - feature/ci-cd
 
 pool:
   vmImage: ubuntu-latest
@@ -15,15 +17,15 @@ stages:
       - job: Setup
         steps:
           - checkout: none
-            displayName: Skipping default checkout 
+            displayName: Skip_checkout(default)
           - script: |
               npm install @salesforce/cli --global
               sf --version
-            displayName: Insatalling Salesforce CLI
+            displayName: Insatall_Salseforce-cli
           - script: |
               sf plugins install code-analyzer
               sf plugins
-            displayName: Installing Salesforce Code-analyzer
+            displayName: Install_Salesforce-Code-analyzer
           - script: |
               echo 'y' | sf plugins install sfdx-git-delta
-            displayName: Install sfdx-git-delta
+            displayName: Install_sfdx-git-delta
