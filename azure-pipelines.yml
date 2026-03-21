@@ -11,9 +11,24 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  - group: uat  //reading varaible values from group
+  #Define pipeline variables
+  - name: TEST_CLASS_NAME
+    value: AccountTriggerTest
+
 stages:
   - stage: Validate
     jobs: 
+      - job: Printing-Variables-Information
+        steps:
+          - script: |
+              echo $(SF_INSTANCE_URL)
+              echo $(SF_CLIENT_ID)
+              echo $(SF_USERNAME)
+              echo $(SF_ALIAS)
+              echo $(CommonSecureFile)
+          
       - job: Setup
         steps:
           - checkout: none
@@ -26,6 +41,13 @@ stages:
               sf plugins install code-analyzer
               sf plugins
             displayName: Install_Salesforce-Code-analyzer
+          
           - script: |
               echo 'y' | sf plugins install sfdx-git-delta
             displayName: Install_sfdx-git-delta
+          
+          - task: DownloadSecureFile@1
+            name: CommonSecureFile
+            inputs:
+              secureFile: 'server.key'
+            displayName: Download Secure File for Authentication
