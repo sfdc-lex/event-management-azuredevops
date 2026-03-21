@@ -10,34 +10,20 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: SFBuildStage
-    jobs:
-      - job: BuildJob
+  - stage: Validate
+    jobs: 
+      - job: Setup
         steps:
-          - script: echo "Building the application"
-            displayName: Single Line script
+          - checkout: none
+            displayName: Skipping default checkout 
           - script: |
-              echo "MultiLine-1"
-              echo "Multiline-2"
-              date
-              whoami
-              pwd
-              uname
-  - stage: SFTestStage
-    jobs:
-      - job: TestJob
-        steps:
-          - script: echo "Building the application"
-            displayName: Single Line script
-  - stage: SFDeployStage
-    jobs:
-      - job: DeployJob
-        steps:
-          - script: echo "Deploying the application"
-            displayName: Single Line script
-          - script: echo Hello, world!
-            displayName: 'Run a one-line script'
+              npm install @salesforce/cli --global
+              sf --version
+            displayName: Insatalling Salesforce CLI
           - script: |
-             echo Add other tasks to build, test, and deploy your project.
-             echo See https://aka.ms/yaml
-            displayName: 'Run a multi-line script'
+              sf plugins install code-analyzer
+              sf plugins
+            displayName: Installing Salesforce Code-analyzer
+          - script: |
+              sf plugins install sfdx-git-delta
+            displayName: Install sfdx-git-delta
