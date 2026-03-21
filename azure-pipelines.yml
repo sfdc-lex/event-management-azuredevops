@@ -25,5 +25,5 @@ stages:
               sf plugins
             displayName: Installing Salesforce Code-analyzer
           - script: |
-              sf plugins install sfdx-git-delta
+              echo 'y' | sf plugins install sfdx-git-delta
             displayName: Install sfdx-git-delta
