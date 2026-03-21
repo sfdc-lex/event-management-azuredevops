@@ -1,0 +1,31 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+      - feature/ci-cd
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: Validate
+    jobs: 
+      - job: Setup
+        steps:
+          - checkout: none
+            displayName: Skip_checkout(default)
+          - script: |
+              npm install @salesforce/cli --global
+              sf --version
+            displayName: Insatall_Salseforce-cli
+          - script: |
+              sf plugins install code-analyzer
+              sf plugins
+            displayName: Install_Salesforce-Code-analyzer
+          - script: |
+              echo 'y' | sf plugins install sfdx-git-delta
+            displayName: Install_sfdx-git-delta
