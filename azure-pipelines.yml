@@ -100,7 +100,12 @@ stages:
           - script: |
               mkdir -p delta
               sf sgd source delta --to "HEAD" --from "HEAD~1" --output-dir "./delta" --generate-delta --ignore-whitespace --ignore-file .sgdignore
-            displayName: Generate delta for deployment
+            displayName: Generate delta for 
+            
+          - script: |
+              ls -R ./delta
+              cat ./delta/destructiveChanges/destructiveChanges.xml
+              cat ./delta/package/package.xml
 
           - script: |
               if grep -q "<types>" delta/destructiveChanges.xml
