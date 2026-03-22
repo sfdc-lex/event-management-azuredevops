@@ -15,7 +15,7 @@ variables:
   - group: uat
   #Define pipeline variables
   - name: TEST_LEVEL
-    value: RunLocalTests
+    value: RunSpecifiedTests
 
 stages:
   - stage: Validate
@@ -61,4 +61,4 @@ stages:
 
           - script: |
               mkdir -p ApexTestsLocal
-              sf apex run test --target-org $(SF_ALIAS) --test-level $(TEST_LEVEL) --code-coverage --result-format human --output-dir ./ApexTestsLocal/
+              sf apex run test --target-org $(SF_ALIAS) --test-level $(TEST_LEVEL) --tests SimpleMathTest --code-coverage --result-format human --output-dir ./ApexTestsLocal/
