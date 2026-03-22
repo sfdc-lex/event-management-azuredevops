@@ -23,6 +23,7 @@ stages:
       - job: Printing_Variables_Information
         steps:
           - checkout: none
+            displayName: Skip checkout(default)
           - script: |
               echo $(SF_INSTANCE_URL)
               echo $(SF_ALIAS)
@@ -34,7 +35,7 @@ stages:
       - job: Setup_Salesforce
         steps:
           - checkout: self
-            displayName: Skip_checkout(default)
+            displayName: Checkout(Manual)
           - script: |
               npm install @salesforce/cli --global
               sf --version
