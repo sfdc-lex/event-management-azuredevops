@@ -55,6 +55,7 @@ stages:
             displayName: Download Secure File for Authentication
 
       - job: Validating_Salesforce
+        dependsOn: Setup_Salesforce
         steps:
         - script: |
               #Authenticating to Salesforce using JWT
