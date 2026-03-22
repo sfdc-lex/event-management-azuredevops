@@ -62,10 +62,13 @@ stages:
           - script: |
               mkdir -p ApexTestsLocal
               sf apex run test --synchronous --target-org $(SF_ALIAS) --test-level RunSpecifiedTests --tests SimpleMathTest --code-coverage --result-format human --output-dir ./ApexTestsLocal/
+            displayName: Running Apex Local Tests
 
           - script:
              mkdir -p scanned-reports
-             sf code-analyzer run --view table --target "force-app" --output-file ./scanned-reports/code_results.html --rule-selector Recommended  
+             sf code-analyzer run --target "force-app" --view table --output-file ./scanned-reports/code_results.html --rule-selector Recommended  
+            displayName: Running Code-Analyzer
 
           - script: |
              sf project deploy start --target-org $(SF_ALIAS) --source-dir "force-app" --dry-run --wait 10  
+            displayName: Vaidating to Salesforce 
