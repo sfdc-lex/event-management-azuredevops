@@ -31,6 +31,9 @@ stages:
               echo $(SF_USERNAME)
               echo $(CommonSecureFile)
               echo $(SecureFilePath)
+              echo 'ArtifactStagingDirectory : ' $(Build.ArtifactStagingDirectory)
+              echo 'Pipeline Workspace : ' $(pipeline.workspace)
+              echo 'DefaultSystem Working Deirectory : ' $(System.DefaultWorkingDirectory)
       
       - job: Setup_Salesforce
         steps:
@@ -69,6 +72,19 @@ stages:
               mkdir -p scanned-reports
               sf code-analyzer run --target "force-app" --view table --output-file ./scanned-reports/code_results.html --rule-selector Recommended  
             displayName: Running Code-Analyzer
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+            displayName: Publish Build Artifacts
+          
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(System.DefaultWorkingDirectory)/scanned-reports'
+              artifact: 'SF_CLI_SCANNER'
+              publishLocation: 'pipeline'
+            displayName: Publish SF-CLI Scanner reports
 
           - script: |
                sf project deploy start --target-org $(SF_ALIAS) --source-dir "force-app" --dry-run --wait 10  
