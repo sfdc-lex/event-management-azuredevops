@@ -64,7 +64,7 @@ stages:
               sf apex run test --synchronous --target-org $(SF_ALIAS) --test-level RunSpecifiedTests --tests SimpleMathTest --code-coverage --result-format human --output-dir ./ApexTestsLocal/
             displayName: Running Apex Local Tests
 
-          - script:
+          - script: |
              mkdir -p scanned-reports
              sf code-analyzer run --target "force-app" --view table --output-file ./scanned-reports/code_results.html --rule-selector Recommended  
             displayName: Running Code-Analyzer
