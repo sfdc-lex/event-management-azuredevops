@@ -12,7 +12,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - group: uat  //reading varaible values from group
+  - group: uat  
   #Define pipeline variables
   - name: TEST_CLASS_NAME
     value: AccountTriggerTest
@@ -53,12 +53,12 @@ stages:
             inputs:
               secureFile: 'server.key'
             displayName: Download Secure File for Authentication
-
+          
           - script: |
               #Authenticating to Salesforce using JWT
-              sf org login --jwt-key-file $(CommonSecureFile.SecureFilePath) --insatnce-url $(SF_INSTANCE_URL) --username $(SF_USERNAME) --set-default --client-id $(SF_CLIENT_ID)  --alias $(SF_ALIAS)
+              sf org login jwt --jwt-key-file $(CommonSecureFile.SecureFilePath) --insatnce-url $(SF_INSTANCE_URL) --username $(SF_USERNAME) --set-default --client-id $(SF_CLIENT_ID)  --alias $(SF_ALIAS)
             displayName: Authenticate with Salesforce
 
           - script: |
+              mkdir -p ApexTestsLocal
               sf apex run tests --target-org $(SF_ALIAS) --test-level RunLocalTests --code-coverage --result-foramt human --output-dir ./ApexTestsLocal/
-              displayName: Run Local Tests
