@@ -12,7 +12,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - group: uat
+  - group: developer-Org
   #Define pipeline variables
   - name: TEST_LEVEL
     value: RunSpecifiedTests
