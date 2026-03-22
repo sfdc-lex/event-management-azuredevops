@@ -63,5 +63,9 @@ stages:
               mkdir -p ApexTestsLocal
               sf apex run test --target-org $(SF_ALIAS) --test-level RunSpecifiedTests --tests SimpleMathTest --code-coverage --result-format human --output-dir ./ApexTestsLocal/
 
+          - script:
+              mkdir -p scanned-reports
+              sf code-analyzer run --target "force-app" --output-file ./scanned-reports/results.html --rule-selector Recommended  
+
           - script: |
              sf project deploy start --target-org $(SF_ALIAS) --source-dir "force-app" --dry-run --wait 10  
