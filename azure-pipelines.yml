@@ -18,7 +18,7 @@ variables:
     value: RunSpecifiedTests
 
 stages:
-  - stage: Validate
+  - stage: ValidateStage
     jobs: 
       - job: Printing_Variables_Information
         steps:
@@ -30,8 +30,8 @@ stages:
               echo $(SF_USERNAME)
               echo $(CommonSecureFile)
               echo $(SecureFilePath)
-          
-      - job: Setup
+      
+      - job: Setup_Salesforce
         steps:
           - checkout: none
             displayName: Skip_checkout(default)
@@ -53,22 +53,24 @@ stages:
             inputs:
               secureFile: 'server.key'
             displayName: Download Secure File for Authentication
-          
-          - script: |
+
+      - job: Validating_Salesforce
+        steps:
+        - script: |
               #Authenticating to Salesforce using JWT
               sf org login jwt --jwt-key-file $(CommonSecureFile.SecureFilePath) --instance-url $(SF_INSTANCE_URL) --username $(SF_USERNAME) --set-default --client-id $(SF_CLIENT_ID)  --alias $(SF_ALIAS)
-            displayName: Authenticate with Salesforce
+          displayName: Authenticate with Salesforce
 
-          - script: |
+        - script: |
               mkdir -p ApexTestsLocal
               sf apex run test --synchronous --target-org $(SF_ALIAS) --test-level RunSpecifiedTests --tests SimpleMathTest --code-coverage --result-format human --output-dir ./ApexTestsLocal/
-            displayName: Running Apex Local Tests
+          displayName: Running Apex Local Tests
 
-          - script: |
+        - script: |
              mkdir -p scanned-reports
              sf code-analyzer run --target "force-app" --view table --output-file ./scanned-reports/code_results.html --rule-selector Recommended  
-            displayName: Running Code-Analyzer
+          displayName: Running Code-Analyzer
 
-          - script: |
+        - script: |
              sf project deploy start --target-org $(SF_ALIAS) --source-dir "force-app" --dry-run --wait 10  
-            displayName: Vaidating to Salesforce 
+          displayName: Vaidating to Salesforce 
