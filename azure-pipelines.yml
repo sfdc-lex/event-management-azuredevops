@@ -47,10 +47,7 @@ stages:
           - script: |
               echo 'y' | sf plugins install sfdx-git-delta
             displayName: Install_sfdx-git-delta      
-
-      - job: Validating_Salesforce
-        dependsOn: Setup_Salesforce
-        steps:
+            
           - task: DownloadSecureFile@1
             name: CommonSecureFile
             inputs:
