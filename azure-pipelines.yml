@@ -12,10 +12,10 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - group: uat  
+  - group: developer-Org
   #Define pipeline variables
-  - name: TEST_CLASS_NAME
-    value: AccountTriggerTest
+  - name: TEST_LEVEL
+    value: RunLocalTests
 
 stages:
   - stage: Validate
@@ -61,4 +61,4 @@ stages:
 
           - script: |
               mkdir -p ApexTestsLocal
-              sf apex run tests --target-org $(SF_ALIAS) --test-level RunLocalTests --code-coverage --result-foramt human --output-dir ./ApexTestsLocal/
+              sf apex run test --target-org $(SF_ALIAS) --test-level $(TEST_LEVEL) --code-coverage --result-foramt human --output-dir ./ApexTestsLocal/
