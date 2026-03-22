@@ -49,6 +49,7 @@ stages:
       - job: Setup_Salesforce
         steps:
           - checkout: self
+            fetchDepth: 0
             displayName: Checkout(Manual)
           - script: |
               npm install @salesforce/cli --global
