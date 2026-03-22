@@ -56,7 +56,7 @@ stages:
           
           - script: |
               #Authenticating to Salesforce using JWT
-              sf org login jwt --jwt-key-file $(CommonSecureFile.SecureFilePath) --insatnce-url $(SF_INSTANCE_URL) --username $(SF_USERNAME) --set-default --client-id $(SF_CLIENT_ID)  --alias $(SF_ALIAS)
+              sf org login jwt --jwt-key-file $(CommonSecureFile.SecureFilePath) --instance-url $(SF_INSTANCE_URL) --username $(SF_USERNAME) --set-default --client-id $(SF_CLIENT_ID)  --alias $(SF_ALIAS)
             displayName: Authenticate with Salesforce
 
           - script: |
