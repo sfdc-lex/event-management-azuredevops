@@ -103,5 +103,11 @@ stages:
             displayName: Generate delta for deployment
 
           - script: |
+              if grep -q "<types>" delta/destructiveChanges.xml
+              then
+              echo "*** Validate Pre-destructiveChanges in Salesforce ***"
+              sf project deploy start --target-org $(SF_ALIAS) --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml --dry-run --wait 10
+
+          - script:
                sf project deploy start --target-org $(SF_ALIAS) --source-dir "force-app" --dry-run --wait 10  
             displayName: Vaidating to Salesforce 
