@@ -14,7 +14,7 @@ trigger: #similar to ON keyword in githubActions [By default PUSH]
 pr:
   branches:
     include:
-      - uat
+      - dev
   paths:
     include:
       - 'force-app/*' 
@@ -96,6 +96,11 @@ stages:
               artifact: 'SF_CLI_SCANNER'
               publishLocation: 'pipeline'
             displayName: Publish SF-CLI Scanner reports
+
+          - script: |
+              mkdir -p delta
+              sf sgd source delta --to "HEAD" --from "HEAD~1" --output-dir "./delta" --generate-delta --ignore-whitespace --ignore-file .sgdignore
+            displayName: Generate delta for deployment
 
           - script: |
                sf project deploy start --target-org $(SF_ALIAS) --source-dir "force-app" --dry-run --wait 10  
