@@ -12,7 +12,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - group: uat  //reading varaible values from group
+  - group: uat  
   #Define pipeline variables
   - name: TEST_CLASS_NAME
     value: AccountTriggerTest
@@ -20,7 +20,7 @@ variables:
 stages:
   - stage: Validate
     jobs: 
-      - job: Printing-Variables-Information
+      - job: Printing_Variables_Information
         steps:
           - script: |
               echo $(SF_INSTANCE_URL)
