@@ -12,7 +12,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - group: developer-Org
+  - group: developer
   #Define pipeline variables
   - name: TEST_LEVEL
     value: RunLocalTests
