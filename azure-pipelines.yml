@@ -53,14 +53,14 @@ stages:
             inputs:
               secureFile: 'server.key'
             displayName: Download Secure File for Authentication
+         - script: |
+              #Authenticating to Salesforce using JWT
+              sf org login jwt --jwt-key-file $(CommonSecureFile.SecureFilePath) --instance-url $(SF_INSTANCE_URL) --username $(SF_USERNAME) --set-default --client-id $(SF_CLIENT_ID)  --alias $(SF_ALIAS)
+           displayName: Authenticate with Salesforce        
 
       - job: Validating_Salesforce
         dependsOn: Setup_Salesforce
-        steps:
-        - script: |
-              #Authenticating to Salesforce using JWT
-              sf org login jwt --jwt-key-file $(CommonSecureFile.SecureFilePath) --instance-url $(SF_INSTANCE_URL) --username $(SF_USERNAME) --set-default --client-id $(SF_CLIENT_ID)  --alias $(SF_ALIAS)
-          displayName: Authenticate with Salesforce
+
 
         - script: |
               mkdir -p ApexTestsLocal
