@@ -51,3 +51,12 @@ stages:
             inputs:
               secureFile: 'server.key'
             displayName: Download Secure File for Authentication
+          
+          - script: |
+              #Authenticating to Salesforce using JWT
+              sf org login --jwt-key-file $(CommonSecureFile.SecureFilePath) --insatnce-url $(SF_INSTANCE_URL) --username $(SF_USERNAME) --set-default --client-id $(SF_CLIENT_ID)  --alias $(SF_ALIAS)
+            displayName: Authenticate with Salesforce
+
+          - script: |
+              mkdir -p ApexTestsLocal
+              sf apex run tests --target-org $(SF_ALIAS) --test-level RunLocalTests --code-coverage --result-foramt human --output-dir ./ApexTestsLocal/
