@@ -61,4 +61,4 @@ stages:
 
           - script: |
               mkdir -p ApexTestsLocal
-              sf apex run test --target-org $(SF_ALIAS) --test-level $(TEST_LEVEL) --code-coverage --result-foramt human --output-dir ./ApexTestsLocal/
+              sf apex run test --target-org $(SF_ALIAS) --test-level $(TEST_LEVEL) --code-coverage --result-format human --output-dir ./ApexTestsLocal/
