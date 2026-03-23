@@ -18,7 +18,7 @@ stages:
   - stage: ValidateStage
     jobs: 
       - job: DEV_Validate
-      - template: ./ado_templates/template.yaml
+      - template: ../ado_templates/template.yaml
         parameters: 
             SF_INSTANCE_URL: $(SF_INSTANCE_URL)
             SF_ALIAS: $(SF_ALIAS)
