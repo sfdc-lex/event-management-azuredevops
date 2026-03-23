@@ -8,7 +8,7 @@ parameters:
   - name: SF_USERNAME
     type: string
     default: null
-  - name: SecureFileName
+  - name: SECURE_FILE_NAME
     type: string
     default:
   - name: PR_MERGED
@@ -36,7 +36,7 @@ jobs:
           - task: DownloadSecureFile@1
             name: CommonSecureFile
             inputs:
-              secureFile: ${{parameters.SecureFileName}}
+              secureFile: ${{parameters.SECURE_FILE_NAME}}
             displayName: Download Secure File for Authentication
 
           - script: |
