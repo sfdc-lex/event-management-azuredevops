@@ -8,6 +8,7 @@ import STATE_FIELD from '@salesforce/schema/Venue__c.State__c';
 import POSTCODE_FIELD from '@salesforce/schema/Venue__c.PostalCode__c';
 import COUNTRY_FIELD from '@salesforce/schema/Venue__c.Country__c';
 export default class AddressForm extends LightningElement {
+   //Added dev validate demo
     address = null;
     @api recordId;
     isLoading = false;
