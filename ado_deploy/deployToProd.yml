@@ -19,7 +19,7 @@ stages:
   - stage: DeployStage
     jobs: 
       - job: PRODp_Deploy
-      - template: ./ado_templates/template.yaml
+      - template: ../ado_templates/template.yaml
         parameters: 
             SF_INSTANCE_URL: $(SF_INSTANCE_URL)
             SF_ALIAS: $(SF_ALIAS)
