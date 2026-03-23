@@ -17,8 +17,9 @@ variables:
 stages:
   - stage: ValidateStage
     jobs: 
-      - job: DEV_Validate
-      - checkout: none
+      - job: 
+      steps:
+        - checkout: none
       - template: ../ado_templates/template.yaml
         parameters: 
             SF_INSTANCE_URL: $(SF_INSTANCE_URL)
