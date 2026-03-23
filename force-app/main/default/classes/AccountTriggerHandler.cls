@@ -1,6 +1,7 @@
 /**
  * @description AccountTriggerHandler
  */
+//Aded Trigger
 public with sharing class AccountTriggerHandler {
 
     private static final String USER_NAME = 'amitacertifications@gmail.com.learning.dev1-sfp';
