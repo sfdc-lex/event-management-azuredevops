@@ -101,14 +101,16 @@ stages:
           - script: |
               mkdir -p delta
               sf sgd source delta --to "HEAD" --from "HEAD~1" --output-dir "./delta" --generate-delta --ignore-whitespace --ignore-file .sgdignore
-            displayName: Generate delta for 
+            displayName: Generate delta for the deployment
             
           - script: |
               ls -R ./delta
               cat ./delta/destructiveChanges/destructiveChanges.xml
               cat ./delta/package/package.xml
+            displayName: Display Dleta the list and contenst
 
           - script: |
+              
               if grep -q "<types>" delta/destructiveChanges.xml
                 then
                   echo "*** Validate Pre-destructiveChanges in Salesforce ***"
@@ -116,7 +118,7 @@ stages:
                 else
                   echo 'No Changes to Validate'
               fi
-
+            displayName: Pre-Validate Destructive Changes
           - script:
                sf project deploy start --target-org $(SF_ALIAS) --source-dir "force-app" --dry-run --wait 10  
             displayName: Vaidating to Salesforce 
