@@ -1,0 +1,93 @@
+parameters:
+  - name: SF_INSTANCE_URL
+    type: string
+    default: null
+  - name: SF_ALIAS
+    type: string
+    default: null
+  - name: SF_USERNAME
+    type: string
+    default: null
+  - name: SecureFileName
+    type: string
+    default:
+  - name: PR_MERGED
+    type: boolean
+    default: false
+jobs: 
+  - job: SF_SetupAndValidate
+    steps:
+          - checkout: self
+            fetchDepth: 0
+            displayName: Checkout(Manual)
+          - script: |
+              npm install @salesforce/cli --global
+              sf --version
+            displayName: Insatall_Salseforce-cli
+          - script: |
+              sf plugins install code-analyzer
+              sf plugins
+            displayName: Install_Salesforce-Code-analyzer
+          
+          - script: |
+              echo 'y' | sf plugins install sfdx-git-delta
+            displayName: Install_sfdx-git-delta      
+
+          - task: DownloadSecureFile@1
+            name: CommonSecureFile
+            inputs:
+              secureFile: ${{parameters.SecureFileName}}
+            displayName: Download Secure File for Authentication
+
+          - script: |
+              #Authenticating to Salesforce using JWT
+              sf org login jwt --jwt-key-file $(CommonSecureFile.SecureFilePath) --instance-url $(SF_INSTANCE_URL) --username $(SF_USERNAME) --set-default --client-id $(SF_CLIENT_ID)  --alias $(SF_ALIAS)
+            displayName: Authenticate with Salesforce
+          
+          - script: |
+              mkdir -p ApexTestsLocal
+              sf apex run test --synchronous --target-org $(SF_ALIAS) --test-level RunSpecifiedTests --tests SimpleMathTest --code-coverage --result-format human --output-dir ./ApexTestsLocal/
+            displayName: Running Apex Local Tests
+
+          - script: |
+              mkdir -p scanned-reports
+              sf code-analyzer run --target "force-app" --view table --output-file ./scanned-reports/code_results.html --rule-selector Recommended  
+            displayName: Running Code-Analyzer
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+            displayName: Publish Build Artifacts
+          
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(System.DefaultWorkingDirectory)/scanned-reports'
+              artifact: 'SF_CLI_SCANNER'
+              publishLocation: 'pipeline'
+            displayName: Publish SF-CLI Scanner reports
+
+          - script: |
+              mkdir -p delta
+              sf sgd source delta --to "HEAD" --from "HEAD~1" --output-dir "./delta" --generate-delta --ignore-whitespace --ignore-file .sgdignore
+            displayName: Generate delta for the deployment
+            
+          - script: |
+              ls -R ./delta
+              cat ./delta/destructiveChanges/destructiveChanges.xml
+              cat ./delta/package/package.xml
+            displayName: Display Dleta the list and contenst
+
+          - script: |
+              
+              if grep -q "<types>" delta/destructiveChanges.xml
+                then
+                  echo "*** Validate Pre-destructiveChanges in Salesforce ***"
+                  sf project deploy start --target-org $(SF_ALIAS) --pre-destructive-changes delta/destructiveChanges/destructiveChanges.xml --manifest delta/destructiveChanges/package.xml --dry-run --wait 10
+                else
+                  echo 'No Changes to Validate'
+              fi
+            displayName: Pre-Validate Destructive Changes
+          - script:
+               sf project deploy start --target-org $(SF_ALIAS) --source-dir "force-app" --dry-run --wait 10  
+            displayName: Vaidating to Salesforce 
