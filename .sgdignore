@@ -1,0 +1,8 @@
+#azure-pipelines
+.github/
+.github/workflows/
+.sf/
+
+#exclude the below apex class for release
+ApexTrigger.cls
+
