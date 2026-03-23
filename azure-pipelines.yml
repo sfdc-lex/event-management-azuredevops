@@ -45,6 +45,7 @@ stages:
               echo 'ArtifactStagingDirectory : ' $(Build.ArtifactStagingDirectory)
               echo 'Pipeline Workspace : ' $(pipeline.workspace)
               echo 'DefaultSystem Working Deirectory : ' $(System.DefaultWorkingDirectory)
+            displayName: Displaying Variable information
       
       - job: Setup_Salesforce
         steps:
