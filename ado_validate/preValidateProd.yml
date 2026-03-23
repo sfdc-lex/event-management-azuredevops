@@ -13,13 +13,13 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - group: prod
+  - group: prod 
 
 stages:
   - stage: ValidateStage
     jobs: 
       - job: PROD_SetupAndValidate
-      - template: ../ado_templates/template.yml
+      - template: ../ado_templates/template.yaml
         parameters: 
             SF_INSTANCE_URL: $(SF_INSTANCE_URL)
             SF_ALIAS: $(SF_ALIAS)
