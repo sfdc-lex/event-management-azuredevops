@@ -3,21 +3,21 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger: #similar to ON keyword in githubActions [By default PUSH]
-  branches:
-    include:
-      - feature/ci-cd
-  paths:
-    include:
-      - 'force-app/*'
+trigger: none#similar to ON keyword in githubActions [By default PUSH]
+  #branches:
+   # include:
+    #  - feature/ci-cd
+  #paths:
+   # include:
+    #  - 'force-app/*'
 
-pr:
-  branches:
-    include:
-      - dev
-  paths:
-    include:
-      - 'force-app/*' 
+pr: none
+ # branches:
+  #  include:
+   #   - dev
+  #paths:
+   # include:
+    #  - 'force-app/*' 
 
 pool:
   vmImage: ubuntu-latest
