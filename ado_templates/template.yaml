@@ -17,9 +17,11 @@ parameters:
   - name: PR_MERGED
     type: boolean
     default: false
-jobs: 
-  - job: SF_SetupAndValidate
-    steps:
+stages:
+  - stage: ValidateStage
+    jobs: 
+      - job: SF_SetupAndValidate
+        steps:
           - checkout: self
             fetchDepth: 0
             displayName: Checkout(Manual)
