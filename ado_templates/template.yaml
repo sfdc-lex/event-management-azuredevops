@@ -8,6 +8,9 @@ parameters:
   - name: SF_USERNAME
     type: string
     default: null
+  - name: SF_CLIENT_ID
+    type: string
+    default: null
   - name: SECURE_FILE_NAME
     type: string
     default:
